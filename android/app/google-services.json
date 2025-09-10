@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "853567035612",
+    "project_id": "titanpark-8f04d",
+    "storage_bucket": "titanpark-8f04d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853567035612:android:b9962f7ee72c9a14493c19",
+        "android_client_info": {
+          "package_name": "com.example.titanpark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853567035612-5dhairv8tofo2ej83idlpcnmhb0iojl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPesEtKvr5nN9rIiD5OG488ChYY8XlMvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853567035612-5dhairv8tofo2ej83idlpcnmhb0iojl6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "853567035612-q439ughemeq37fra0fkklhcfqp91s7li.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.titanpark"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
