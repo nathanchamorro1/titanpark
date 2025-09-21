@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
+import './add_vehicle_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,7 +19,28 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('You are signed in!')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'You are signed in!'
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddVehicleScreen(),
+                  ),
+                );
+              },
+              label: const Text('Add vehicle'),
+            )
+          ],
+        )
+        ),
     );
   }
 }
