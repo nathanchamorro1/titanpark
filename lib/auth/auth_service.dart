@@ -2,7 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
+  final GoogleSignIn _googleSignIn;
+
+  AuthService({FirebaseAuth? auth, GoogleSignIn? googleSignIn})
+      : _auth = auth ?? FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
@@ -16,11 +21,11 @@ class AuthService {
 
   Future<void> signOut() async {
     await _auth.signOut();
-    await GoogleSignIn().signOut();
+    await _googleSignIn.signOut();
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
       throw FirebaseAuthException(code: 'ABORTED', message: 'Sign-in aborted by user');
     }
