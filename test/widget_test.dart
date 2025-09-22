@@ -1,9 +1,6 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Simple widget test decoupled from Firebase/Auth.
+// We pump MyHomePage directly so the test doesn't require
+// Firebase initialization or the AuthGate widget.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,19 +8,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:titanpark/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('MyHomePage counter increments', (tester) async {
+    // Pump the counter page inside a MaterialApp scaffold.
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MyHomePage(title: 'Test Counter'),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
+    // Starts at 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
+    // Tap the FAB and rebuild a frame.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
+    // Counter increments to 1.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });

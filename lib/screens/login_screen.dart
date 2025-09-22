@@ -4,7 +4,8 @@ import '../auth/auth_service.dart';
 import '../widgets/primary_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final AuthService? authService;
+  const LoginScreen({super.key, this.authService});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -14,7 +15,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _loading = false;
-  final _auth = AuthService();
+  late final AuthService _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = widget.authService ?? AuthService();
+  }
 
   void _showErr(Object e) {
     final msg = e is FirebaseAuthException ? (e.message ?? e.code) : e.toString();
