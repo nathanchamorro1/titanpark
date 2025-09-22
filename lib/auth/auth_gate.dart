@@ -9,7 +9,7 @@ class AuthGate extends StatelessWidget {
   final AuthService? authService;
 
   AuthGate({super.key, FirebaseAuth? auth, this.authService})
-      : _auth = auth ?? FirebaseAuth.instance;
+    : _auth = auth ?? FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,9 @@ class AuthGate extends StatelessWidget {
       stream: _auth.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         if (snapshot.hasData) {
           return HomeScreen(authService: service);

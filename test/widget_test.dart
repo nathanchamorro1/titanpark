@@ -11,9 +11,7 @@ void main() {
   testWidgets('MyHomePage counter increments', (tester) async {
     // Pump the counter page inside a MaterialApp scaffold.
     await tester.pumpWidget(
-      const MaterialApp(
-        home: MyHomePage(title: 'Test Counter'),
-      ),
+      const MaterialApp(home: MyHomePage(title: 'Test Counter')),
     );
 
     // Starts at 0.
