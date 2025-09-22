@@ -24,7 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showErr(Object e) {
-    final msg = e is FirebaseAuthException ? (e.message ?? e.code) : e.toString();
+    final msg = e is FirebaseAuthException
+        ? (e.message ?? e.code)
+        : e.toString();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
@@ -72,22 +74,39 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('TitanPark', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                const Text(
+                  'TitanPark',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 24),
                 TextField(
                   controller: _email,
-                  decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 TextField(
                   controller: _password,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
                 const SizedBox(height: 16),
-                PrimaryButton(label: 'Sign In', onPressed: _signIn, loading: _loading),
+                PrimaryButton(
+                  label: 'Sign In',
+                  onPressed: _signIn,
+                  loading: _loading,
+                ),
                 const SizedBox(height: 8),
-                PrimaryButton(label: 'Create Account', onPressed: _signUp, loading: _loading),
+                PrimaryButton(
+                  label: 'Create Account',
+                  onPressed: _signUp,
+                  loading: _loading,
+                ),
                 const SizedBox(height: 16),
                 OutlinedButton.icon(
                   onPressed: _google,
