@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final AuthService? authService;
+  const HomeScreen({super.key, this.authService});
 
   @override
   Widget build(BuildContext context) {
-    final auth = AuthService();
+    final auth = authService ?? AuthService();
     return Scaffold(
       appBar: AppBar(
         title: const Text('TitanPark Home'),
