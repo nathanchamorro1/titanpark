@@ -2,42 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
-import 'auth/auth_gate.dart'; // existing gate
-import 'theme/app_theme.dart'; // shared theme
-import 'app_router.dart'; // central routes
+import 'auth/auth_gate.dart';
+import 'theme/app_theme.dart';
+import 'app_router.dart';
+import 'auth/auth_service.dart'; // ✅ Add this import for auth service
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const TitanParkApp());
+
+  // ✅ Create the dependencies
+  final authService = AuthService(); // or however your project initializes it
+  final appRouter = AppRouter(authService: authService);
+
+  // ✅ Remove const (router is not const)
+  runApp(TitanParkApp(appRouter: appRouter));
 }
 
-/// Real app
+/// The main app widget
 class TitanParkApp extends StatelessWidget {
-  const TitanParkApp({super.key});
+  const TitanParkApp({super.key, required this.appRouter});
+
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TitanPark',
       theme: AppTheme.light,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      // Keep AuthGate as the entry point (note: not const)
-      home: AuthGate(),
+      onGenerateRoute: appRouter.onGenerateRoute, // ✅ use instance router
+      home: AuthGate(), // entry point (can stay as is)
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-/// ---- Compatibility shims for the default template tests ----
-/// If widget_test.dart pumps `const MyApp()` this alias keeps it working.
-class MyApp extends TitanParkApp {
+/// ---- Compatibility shims for widget tests ----
+/// Keeps `const MyApp()` working for widget_test.dart
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Create minimal dependencies for test environment
+    final authService = AuthService();
+    final appRouter = AppRouter(authService: authService);
+    return TitanParkApp(appRouter: appRouter);
+  }
 }
 
-/// If widget_test.dart pumps a const MyHomePage(...) this keeps it working.
+/// Keeps `const MyHomePage()` working for widget tests
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title}); // const ctor for tests
+  const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
