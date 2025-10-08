@@ -60,7 +60,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '853567035612',
     projectId: 'titanpark-8f04d',
     storageBucket: 'titanpark-8f04d.firebasestorage.app',
-    iosClientId: '853567035612-q439ughemeq37fra0fkklhcfqp91s7li.apps.googleusercontent.com',
+    iosClientId:
+        '853567035612-q439ughemeq37fra0fkklhcfqp91s7li.apps.googleusercontent.com',
     iosBundleId: 'com.example.titanpark',
   );
 
@@ -73,5 +74,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'titanpark-8f04d.firebasestorage.app',
     measurementId: 'G-3JWTPH8V9P',
   );
-
 }

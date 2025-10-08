@@ -21,7 +21,11 @@ class PrimaryButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 14.0),
           child: loading
-              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
               : Text(label),
         ),
       ),
