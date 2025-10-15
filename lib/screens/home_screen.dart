@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 import './add_vehicle_screen.dart';
+import './vehicles_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
@@ -21,23 +22,22 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddVehicleScreen(),
-                  ),
-                );
-              },
-              label: const Text('Add vehicle'),
-            )
-          ],
-        )
-        ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const VehiclesScreen(),
+                ),
+              );
+            },
+            label: const Text('My vehicles'),
+          ),
+        ],
+      )),
     );
   }
 }

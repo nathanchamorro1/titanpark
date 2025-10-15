@@ -75,8 +75,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       throw Exception('Failed to add vehicle: ${res.body}');
     }
 
-    print('Vehicle added successfully: ${res.body}');
-
     if (mounted) {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
