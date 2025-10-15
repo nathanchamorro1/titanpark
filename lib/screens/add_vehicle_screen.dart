@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/primary_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../config.dart';
 import 'package:http/http.dart' as http;
 
 class AddVehicleScreen extends StatefulWidget {
@@ -64,18 +65,24 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     };
 
     final res = await http.post(
-      Uri.parse('http://parking.titanpark.online/add_vehicle'),
+      Uri.parse('$kParkingApiBaseUrl/add_vehicle').replace(queryParameters: vehicleData),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: vehicleData,
     );
 
     if (res.statusCode != 200 && res.statusCode != 201) {
-      throw Exception('Failed to add vehcile: ${res.body}');
+      throw Exception('Failed to add vehicle: ${res.body}');
     }
 
     print('Vehicle added successfully: ${res.body}');
+
+    if (mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vehicle added successfully!')),
+      );
+    }
   }
 
   @override
