@@ -15,6 +15,7 @@ class ParkingAvailabilityScreen extends StatefulWidget {
 class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   bool _isLoading = true;
   List<Map<String, dynamic>> _data = [];
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   Future<void> _fetchStructures() async {
     setState(() {
       _isLoading = true;
+      _errorMessage = null;
     });
 
     try {
@@ -45,9 +47,9 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
             'Failed to load parking availability data: ${res.body}');
       }
     } catch (e) {
-      print("Error fetching resources: $e");
       setState(() {
         _isLoading = false;
+        _errorMessage = 'There was an error loading parking structure data';
       });
     }
   }
@@ -90,6 +92,26 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
+          : _errorMessage != null
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 60, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(
+              _errorMessage!,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _fetchStructures,
+              child: const Text('Retry'),
+            )
+          ],
+        ),
+      )
           : RefreshIndicator(
               onRefresh: _fetchStructures,
               child: ListView.builder(
