@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
+import './parking_availability_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
@@ -19,7 +20,23 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('You are signed in!')),
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParkingAvailabilityScreen(),
+                    ),
+                  );
+                },
+                label: const Text('Parking Availability'),
+              ),
+            ],
+          )),
     );
   }
 }
