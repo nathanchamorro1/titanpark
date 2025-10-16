@@ -89,7 +89,12 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 32),
                     GestureDetector(
                       onTap: () {
-                        // We'll implement this button when we merge the parking availability feature
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ParkingAvailabilityScreen(),
+                          )
+                        );
                       },
                       child: const Text.rich(
                         TextSpan(
