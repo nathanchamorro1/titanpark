@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
 import 'package:titanpark/screens/reservation_screen.dart';
+import './parking_availability_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
