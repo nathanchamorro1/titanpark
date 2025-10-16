@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 import 'auth/auth_gate.dart';
-import 'theme/app_theme.dart';
 import 'app_router.dart';
 import 'auth/auth_service.dart'; // ✅ Add this import for auth service
 
@@ -11,11 +10,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // ✅ Create the dependencies
   final authService = AuthService(); // or however your project initializes it
   final appRouter = AppRouter(authService: authService);
 
-  // ✅ Remove const (router is not const)
   runApp(TitanParkApp(appRouter: appRouter));
 }
 
@@ -26,14 +23,32 @@ class TitanParkApp extends StatelessWidget {
   final AppRouter appRouter;
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TitanPark',
-      theme: AppTheme.light,
-      onGenerateRoute: appRouter.onGenerateRoute, // ✅ use instance router
-      home: AuthGate(), // entry point (can stay as is)
-      debugShowCheckedModeBanner: false,
-    );
+  return MaterialApp(
+    title: 'TitanPark',
+    theme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF00244E), // Titan Blue (https://brand.fullerton.edu/colors/)
+        brightness: Brightness.light,
+      ),
+      scaffoldBackgroundColor: Colors.white,
+      fontFamily: 'MuseoSans',
+    ),
+    darkTheme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF00244E), // Titan Blue (https://brand.fullerton.edu/colors/)
+        brightness: Brightness.dark,
+      ),
+      fontFamily: 'MuseoSans',
+    ),
+    themeMode: ThemeMode.system,
+    onGenerateRoute: appRouter.onGenerateRoute,
+    home: AuthGate(),
+    debugShowCheckedModeBanner: false,
+  );
   }
 }
 
