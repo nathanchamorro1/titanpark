@@ -3,6 +3,7 @@ import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
 import 'package:titanpark/screens/reservation_screen.dart';
 import './parking_availability_screen.dart';
+import './vehicles_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
@@ -99,6 +100,15 @@ class HomeScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ReservationScreen(),
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 16),
+                    _actionButton('MY VEHICLES', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const VehiclesScreen(),
                         ),
                       );
                     }),
