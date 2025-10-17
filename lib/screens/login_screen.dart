@@ -24,9 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showErr(Object e) {
-    final msg = e is FirebaseAuthException
-        ? (e.message ?? e.code)
-        : e.toString();
+    final msg =
+        e is FirebaseAuthException ? (e.message ?? e.code) : e.toString();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
@@ -74,9 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'TitanPark',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Image.asset(
+                  'assets/titanpark_logo_dark.png',
+                  width: 220,
+                  fit: BoxFit.contain,
                 ),
                 const SizedBox(height: 24),
                 TextField(

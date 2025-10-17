@@ -39,6 +39,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  intl: ^0.20.2
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:
@@ -57,16 +59,35 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  fonts:
+    - family: MuseoSans
+      fonts:
+        - asset: assets/fonts/MuseoSans_500_Italic.otf
+        - asset: assets/fonts/MuseoSans_500.otf
+        - asset: assets/fonts/MuseoSans_700.otf
+          weight: 700
+        - asset: assets/fonts/MuseoSans_900.otf
+          weight: 900
+        - asset: assets/fonts/MuseoSans-100.otf
+          weight: 100
+        - asset: assets/fonts/MuseoSans-100Italic.otf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/MuseoSans-300.otf
+          weight: 300
+        - asset: assets/fonts/MuseoSans-300Italic.otf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/MuseoSans-700Italic.otf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/MuseoSans-900Italic.otf
+          weight: 900
+          style: italic
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nathanchamorro1/titanpark">
-    <img src="/assets/img/csuf_logo.svg" alt="Logo" height="60">
+    <img src="/assets/csuf_logo.svg" alt="Logo" height="60">
   </a>
 
   <h3 align="center">TitanPark</h3>
