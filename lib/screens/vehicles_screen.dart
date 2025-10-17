@@ -54,6 +54,33 @@ class _VehiclesScreen extends State<VehiclesScreen> {
     }
   }
 
+  Future<void> _deleteVehicle(String vehicleID) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final params = {
+      'vehicle_id': vehicleID,
+    };
+
+    final res = await http.post(
+      Uri.parse('$kParkingApiBaseUrl/delete_vehicle')
+          .replace(queryParameters: params),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    );
+
+    if (res.statusCode != 200 && res.statusCode != 201) {
+      throw Exception('Failed to delete vehicle: ${res.body}');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+    _fetchVehicles();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +128,12 @@ class _VehiclesScreen extends State<VehiclesScreen> {
                           Text('License Plate: ${vehicle['license_plate']}'),
                           Text('Color: ${vehicle['color']}')
                         ],
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.grey),
+                        onPressed: () {
+                          _deleteVehicle(vehicle['id']);
+                        },
                       ),
                     ),
                   );
