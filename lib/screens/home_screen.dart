@@ -31,25 +31,31 @@ class HomeScreen extends StatelessWidget {
                 // Dark overlay for readability / accessibility
                 Container(color: Colors.black.withValues(alpha: 0.4)),
 
-                // SafeArea wrapper for top icons
+                // ✅ FIXED HEADER ICON ALIGNMENT
                 SafeArea(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 👤 Profile Icon (top-left)
-                      IconButton(
-                        icon: const Icon(Icons.person, color: Colors.white),
-                        tooltip: 'Profile',
-                        onPressed: () => _showProfileMenu(context),
-                      ),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // 👤 Profile Icon (left of logout)
+                          IconButton(
+                            icon: const Icon(Icons.person, color: Colors.white),
+                            tooltip: 'Profile',
+                            onPressed: () => _showProfileMenu(context),
+                          ),
 
-                      // 🔒 Logout (top-right)
-                      IconButton(
-                        icon: const Icon(Icons.logout, color: Colors.white),
-                        tooltip: 'Sign out',
-                        onPressed: () => auth.signOut(),
+                          // 🔒 Logout Icon (rightmost)
+                          IconButton(
+                            icon: const Icon(Icons.logout, color: Colors.white),
+                            tooltip: 'Sign out',
+                            onPressed: () => auth.signOut(),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
 
@@ -146,8 +152,7 @@ class HomeScreen extends StatelessWidget {
         width: 260,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor:
-                const Color(0xFF00244E), // Titan Blue (https://brand.fullerton.edu/colors/)
+            backgroundColor: const Color(0xFF00244E), // Titan Blue
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
@@ -202,8 +207,9 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: const Color(0xFF00244E),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 50),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         onPressed: () {
           Navigator.pop(context);
