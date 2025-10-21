@@ -50,7 +50,14 @@ class _VehiclesScreen extends State<VehiclesScreen> {
         throw Exception('Failed to load vehicles: ${res.body}');
       }
     } catch (e) {
-      print('Error fetching vehicles: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error trying to get your vehicles. Please try again later.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

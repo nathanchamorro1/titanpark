@@ -5,7 +5,7 @@ import '../config.dart';
 import 'package:http/http.dart' as http;
 
 class AddVehicleScreen extends StatefulWidget {
-  const AddVehicleScreen({Key? key}) : super(key: key);
+  const AddVehicleScreen({super.key});
 
   @override
   State<AddVehicleScreen> createState() => _AddVehicleScreenState();
@@ -37,11 +37,18 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       setState(() {
         _isLoading = true;
       });
-      
+
       try {
         await _postVehicle();
-      } catch(e) {
-        print('Error tying to post vehicle: ${e}');
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to add vehicle. Please try again later.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       } finally {
         if (mounted) {
           setState(() {
