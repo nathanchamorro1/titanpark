@@ -13,7 +13,7 @@ class VehiclesScreen extends StatefulWidget {
 }
 
 class _VehiclesScreen extends State<VehiclesScreen> {
-  final user_id = FirebaseAuth.instance.currentUser?.uid;
+  final userID = FirebaseAuth.instance.currentUser?.uid;
   List<Map<String, dynamic>> _vehicles = [];
   bool _isLoading = true;
 
@@ -30,7 +30,7 @@ class _VehiclesScreen extends State<VehiclesScreen> {
     try {
       final res = await http.get(
         Uri.parse('$kParkingApiBaseUrl/get_user_vehicles')
-            .replace(queryParameters: {'user_id': user_id}),
+            .replace(queryParameters: {'user_id': userID}),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -53,7 +53,8 @@ class _VehiclesScreen extends State<VehiclesScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error trying to get your vehicles. Please try again later.'),
+            content: Text(
+                'Error trying to get your vehicles. Please try again later.'),
             backgroundColor: Colors.red,
           ),
         );
