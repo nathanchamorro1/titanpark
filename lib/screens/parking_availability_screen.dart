@@ -167,6 +167,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                     ),
                                   ),
                                   Container(
+                                    key: Key('parking_indicator'),
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 6,
@@ -211,6 +212,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                         ),
                                       ),
                                       Text(
+                                        key: const Key('perc_full'),
                                         '${(percFull * 100).toInt()}% Full',
                                         style: const TextStyle(
                                           fontSize: 15,
