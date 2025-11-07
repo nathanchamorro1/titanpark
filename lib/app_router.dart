@@ -1,14 +1,12 @@
-// lib/app_router.dart
 import 'package:flutter/material.dart';
 
+import 'auth/auth_service.dart';
 import 'screens/home_screen.dart';
 import 'screens/vehicles_screen.dart';
 import 'screens/marketplace_screen.dart';
 import 'screens/reservation_screen.dart';
 import 'screens/wallet_screen.dart';
-
-// adjust path if different
-import 'auth/auth_service.dart';
+import 'screens/profile_page.dart';
 
 class AppRouter {
   AppRouter({required this.authService});
@@ -20,6 +18,7 @@ class AppRouter {
   static const marketplace = '/marketplace';
   static const reservation = '/reservation';
   static const wallet = '/wallet';
+  static const profile = '/profile'; // ⟵ NEW
 
   // instance onGenerateRoute
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -34,6 +33,8 @@ class AppRouter {
         return _fade(const ReservationScreen());
       case wallet:
         return _fade(const WalletScreen());
+      case profile: // ⟵ NEW
+        return _fade(const ProfilePage());
       default:
         return _fade(HomeScreen(authService: authService));
     }
