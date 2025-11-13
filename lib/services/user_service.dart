@@ -27,7 +27,7 @@ class UserService {
   Future<void> updateEmail(String email) async {
     final user = _auth.currentUser;
     if (user == null) return;
-    await user.updateEmail(email);
+    await user.verifyBeforeUpdateEmail(email);
     await _db.collection('users').doc(user.uid).set(
       {'email': email},
       SetOptions(merge: true),

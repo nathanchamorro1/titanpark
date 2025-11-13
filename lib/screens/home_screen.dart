@@ -3,7 +3,7 @@ import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
 import 'package:titanpark/screens/reservation_screen.dart';
 import './parking_availability_screen.dart';
-import '../app_router.dart'; // ⟵ for AppRouter.profile route
+import '../app_router.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
@@ -16,40 +16,33 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // HEADER SECTION
           SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.38,
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Background photo of Eastside Parking Structure
                 Image.asset(
                   'assets/titanpark_bg.jpg',
                   fit: BoxFit.cover,
                 ),
 
-                // Dark overlay for readability / accessibility
-                Container(color: Colors.black.withOpacity(0.4)),
+                Container(color: Colors.black.withValues(alpha: 0.4)),
 
-                // Header icons (Profile + Logout)
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // 👤 Profile — navigates to dedicated Profile page
                           IconButton(
                             icon: const Icon(Icons.person, color: Colors.white),
                             tooltip: 'Profile',
                             onPressed: () =>
                                 Navigator.of(context).pushNamed(AppRouter.profile),
                           ),
-                          // 🔒 Logout
                           IconButton(
                             icon: const Icon(Icons.logout, color: Colors.white),
                             tooltip: 'Sign out',
@@ -61,7 +54,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Centered TitanPark logo
                 Center(
                   child: Image.asset(
                     'assets/titanpark_logo.png',
@@ -73,13 +65,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // ORANGE DIVIDER LINE
           Container(
             height: 6,
-            color: const Color(0xFFFF7900), // Titan Orange
+            color: const Color(0xFFFF7900),
           ),
 
-          // BUTTONS AND LINKS
           Expanded(
             child: Center(
               child: Padding(
@@ -110,8 +100,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ParkingAvailabilityScreen(),
+                            builder: (context) => const ParkingAvailabilityScreen(),
                           ),
                         );
                       },
@@ -146,7 +135,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- BUTTON HELPER ---
   Widget _actionButton(String text, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -154,7 +142,7 @@ class HomeScreen extends StatelessWidget {
         width: 260,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF00244E), // Titan Blue
+            backgroundColor: const Color(0xFF00244E),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
