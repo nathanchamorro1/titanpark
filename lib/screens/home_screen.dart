@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
-import 'package:titanpark/screens/reservation_screen.dart';
+import 'package:titanpark/screens/list_spot_screen.dart';
 import './parking_availability_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _actionButton('LIST A SPOT', () {
+                    _actionButton('BUY A SPOT', () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -94,11 +94,11 @@ class HomeScreen extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 16),
-                    _actionButton('SELL A SPOT', () {
+                    _actionButton('LIST A SPOT', () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ReservationScreen(),
+                          builder: (context) => const ListSpotScreen(),
                         ),
                       );
                     }),
