@@ -112,11 +112,11 @@ class HomeScreen extends StatelessWidget {
                               text: 'OR ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                             TextSpan(
-                              text: 'view parking availability >',
+                              text: 'view parking availability',
                               style: TextStyle(
                                 color: Colors.blueAccent,
                                 decoration: TextDecoration.underline,

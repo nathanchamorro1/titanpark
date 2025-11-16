@@ -466,7 +466,7 @@ Text(
 ),
 Text(
   'Include details that will help the buyer easily find your car inside the structure. '
-  'For example: the level, the direction you\'re facing, nearby signs or landmarks, and optionally your license plate.',
+  'For example: the level, the direction you\'re facing, and nearby signs or landmarks.',
   style: theme.textTheme.bodySmall?.copyWith(
     color: Colors.grey.shade500,
     height: 1.3,
@@ -477,7 +477,7 @@ TextFormField(
   controller: _locationController,
   maxLines: 2,
   decoration: InputDecoration(
-    hintText: 'E.g., Northmost row, near elevator. Facing large red truck. License plate: ABC1234',
+    hintText: 'E.g., Northmost row, near elevator. Facing large red truck.',
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
     ),
