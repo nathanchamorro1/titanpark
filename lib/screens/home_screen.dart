@@ -3,6 +3,7 @@ import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
 import 'package:titanpark/screens/list_spot_screen.dart';
 import './parking_availability_screen.dart';
+import '../app_router.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService? authService;
@@ -15,21 +16,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // HEADER SECTION
           SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.38,
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Background photo of Eastside Parking Structure
                 Image.asset(
                   'assets/titanpark_bg.jpg',
                   fit: BoxFit.cover,
                 ),
 
-                // Dark overlay for readability / accessibility
                 Container(color: Colors.black.withValues(alpha: 0.4)),
+
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topRight,
@@ -42,10 +41,9 @@ class HomeScreen extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.person, color: Colors.white),
                             tooltip: 'Profile',
-                            onPressed: () => _showProfileMenu(context),
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed(AppRouter.profile),
                           ),
-
-                          // 🔒 Logout Icon (rightmost)
                           IconButton(
                             icon: const Icon(Icons.logout, color: Colors.white),
                             tooltip: 'Sign out',
@@ -57,7 +55,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Centered logo overlaying the background
                 Center(
                   child: Image.asset(
                     'assets/titanpark_logo.png',
@@ -69,13 +66,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // ORANGE DIVIDER LINE
           Container(
             height: 6,
-            color: const Color(0xFFFF7900), // Titan Orange
+            color: const Color(0xFFFF7900),
           ),
 
-          // BUTTONS AND LINKS
           Expanded(
             child: Center(
               child: Padding(
@@ -106,8 +101,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ParkingAvailabilityScreen(),
+                            builder: (context) => const ParkingAvailabilityScreen(),
                           ),
                         );
                       },
@@ -142,7 +136,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- BUTTON HELPER ---
   Widget _actionButton(String text, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -150,7 +143,7 @@ class HomeScreen extends StatelessWidget {
         width: 260,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF00244E), // Titan Blue
+            backgroundColor: const Color(0xFF00244E),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
@@ -168,57 +161,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // --- PROFILE MENU ---
-  void _showProfileMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildProfileButton(context, "Display Name"),
-              _buildProfileButton(context, "Email"),
-              _buildProfileButton(context, "Wallet"),
-              const SizedBox(height: 10),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildProfileButton(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00244E),
-          foregroundColor: Colors.white,
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Feature coming soon!"),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        },
-        child: Text(title),
       ),
     );
   }
