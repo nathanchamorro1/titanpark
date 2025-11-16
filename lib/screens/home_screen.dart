@@ -30,8 +30,6 @@ class HomeScreen extends StatelessWidget {
 
                 // Dark overlay for readability / accessibility
                 Container(color: Colors.black.withValues(alpha: 0.4)),
-
-                // ✅ FIXED HEADER ICON ALIGNMENT
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topRight,
@@ -40,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // 👤 Profile Icon (left of logout)
+                          // Profile Icon
                           IconButton(
                             icon: const Icon(Icons.person, color: Colors.white),
                             tooltip: 'Profile',

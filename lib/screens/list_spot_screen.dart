@@ -96,7 +96,7 @@ Future<void> _submit() async {
   final floor = int.parse(_floorController.text);
   final price = int.parse(_creditsController.text);
 
-  // TODO: later wire this to real logged-in user
+
   const String userId = 'demo-user';
 
   final locText = _locationController.text.trim();
@@ -285,7 +285,7 @@ Future<void> _submit() async {
                   ),
                   const SizedBox(height: 24),
 
-                  // Credits (you already have this)
+                  // Credits
                   Text(
                     'How many credits would you like to list your parking spot for?',
                     style: theme.textTheme.labelLarge,
@@ -316,7 +316,7 @@ Future<void> _submit() async {
                     },
                   ),
 
-                  // Recommendation text (already there)
+                  // Recommendation text
                   Text.rich(
                     TextSpan(
                       children: [
@@ -338,7 +338,7 @@ Future<void> _submit() async {
 
                   const SizedBox(height: 24),
 
-                  // 🔹 CAR DETAILS SECTION
+                  // Car Details
                   Text(
                     'Car details',
                     style: theme.textTheme.titleMedium?.copyWith(
@@ -456,8 +456,6 @@ Future<void> _submit() async {
                   ),
 
                   const SizedBox(height: 24),
-
-                  // (Then your existing location description section if you still want it)
 
 
 // Location description widget
