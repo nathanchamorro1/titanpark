@@ -176,6 +176,7 @@ Future<void> _submit() async {
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
+                    // ignore: deprecated_member_use
                     value: _selectedStructure,
                     decoration: InputDecoration(
                       contentPadding:
