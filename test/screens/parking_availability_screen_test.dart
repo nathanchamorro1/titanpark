@@ -43,7 +43,7 @@ void main() {
         (tester) async {
       // Mock HTTP client
       final mockClient = MockClient((request) async {
-        const json_res = '''
+        const jsonRes = '''
         {
           "Nutwood_Structure": {
             "available": 1449,
@@ -76,7 +76,7 @@ void main() {
         }
         ''';
 
-        return http.Response(json_res, 200);
+        return http.Response(jsonRes, 200);
       });
 
       await tester.pumpWidget(
@@ -137,7 +137,7 @@ void main() {
         (tester) async {
       // Mock HTTP client
       final mockClient = MockClient((request) async {
-        const json_res = '''
+        const jsonRes = '''
         {
           "Nutwood_Structure": {
             "available": 1445,
@@ -170,7 +170,7 @@ void main() {
         }
         ''';
 
-        return http.Response(json_res, 200);
+        return http.Response(jsonRes, 200);
       });
 
       await tester.pumpWidget(
