@@ -99,55 +99,73 @@ class _VehiclesScreen extends State<VehiclesScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : RefreshIndicator(
-              onRefresh: _fetchVehicles,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16.0),
-                itemCount: _vehicles.length,
-                itemBuilder: (context, index) {
-                  final vehicle = _vehicles[index];
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    elevation: 2,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16.0),
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
-                        child: Icon(
-                          Icons.directions_car,
-                          color: Theme.of(context).primaryColor,
-                        ),
+          : _vehicles.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.directions_car_outlined,
+                          size: 60, color: Colors.black),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Add a vehicle to your account by clicking the plus button at the bottom",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
                       ),
-                      title: Text(
-                        '${vehicle['year']} ${vehicle['make']} ${vehicle['model']}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 8,
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: _fetchVehicles,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: _vehicles.length,
+                    itemBuilder: (context, index) {
+                      final vehicle = _vehicles[index];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        elevation: 2,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(16.0),
+                          leading: CircleAvatar(
+                            backgroundColor: Theme.of(context)
+                                .primaryColor
+                                .withValues(alpha: 0.1),
+                            child: Icon(
+                              Icons.directions_car,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                          Text('License Plate: ${vehicle['license_plate']}'),
-                          Text('Color: ${vehicle['color']}')
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.grey),
-                        onPressed: () {
-                          _deleteVehicle(vehicle['id']);
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                          title: Text(
+                            '${vehicle['year']} ${vehicle['make']} ${vehicle['model']}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                  'License Plate: ${vehicle['license_plate']}'),
+                              Text('Color: ${vehicle['color']}')
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.grey),
+                            onPressed: () {
+                              _deleteVehicle(vehicle['id']);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
