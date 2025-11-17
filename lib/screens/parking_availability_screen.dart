@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import '../config.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:titanpark/services/notification_service.dart';
+
 
 class ParkingAvailabilityScreen extends StatefulWidget {
   final http.Client? httpClient;
@@ -35,7 +37,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
     super.dispose();
   }
 
-  Future<void> _fetchStructures() async {
+  Future<void> _fetchStructures({BuildContext? context}) async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -63,6 +65,14 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
         _isLoading = false;
         _errorMessage = 'There was an error loading parking structure data';
       });
+
+      if (context != null && mounted) {
+        NotificationService.showError(
+          context,
+          title: 'Unable to load data',
+          message: 'Check your connection and try again.',
+        );
+      }
     }
   }
 
@@ -112,7 +122,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _fetchStructures,
+            onPressed: () => _fetchStructures(context: context),
             tooltip: 'Refresh',
           ),
         ],
@@ -134,14 +144,14 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: _fetchStructures,
+                        onPressed: () => _fetchStructures(context: context),
                         child: const Text('Retry'),
                       ),
                     ],
                   ),
                 )
               : RefreshIndicator(
-                  onRefresh: _fetchStructures,
+                  onRefresh: () => _fetchStructures(context: context),
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: _data.length,
@@ -282,7 +292,12 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                   ElevatedButton.icon(
                                     onPressed: spotsForSaleCount > 0
                                         ? () {
-                                            throw UnimplementedError();
+                                            NotificationService.showSuccess(
+                                              context,
+                                              title: 'Reservation confirmed',
+                                              message:
+                                                  'You selected $structName. Reservation & payment flow coming next.',
+                                            );
                                           }
                                         : null,
                                     icon: const Icon(Icons.local_parking,
