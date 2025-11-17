@@ -194,9 +194,9 @@ void main() {
       expect(textEastsideNorth.data, "90% Full");
 
       // Test Eastside South percentage
-      final textEastsideSouth =
-          tester.widget<Text>(find.byKey(const Key('perc_full')).at(2));
-      expect(textEastsideSouth.data, "37.28% Full");
+      await tester.drag(find.byType(ListView), const Offset(0, -600));
+      await tester.pumpAndSettle();
+      expect(find.text("37.28% Full"), findsOneWidget);
     });
   });
 }
