@@ -132,12 +132,8 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                       final structName = structure['name'];
 
                       // ------------ FIXED PERCENTAGE HERE ------------
-                      // Backend is incorrectly returning values like 4784 instead of 47.84
-                      // Convert to normalized 0.0–1.0
-                      final double raw =
-                          (structure['perc_full'] as num).toDouble();
-                      final double percFull = raw / 10000.0; // FIXED
-                      final double displayPercent = percFull * 100;
+                      final double raw = (structure['perc_full'] as num).toDouble(); // ex: 47.8
+                      final double percFull = raw / 100; // used for progress indicator (0.0–1.0)
                       // -------------------------------------------------
 
                       final available = structure['available'] as int;
@@ -218,7 +214,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                       ),
                                       Text(
                                         key: const Key('perc_full'),
-                                        '${(percFull * 100).toInt()}% Full',
+                                        '${raw.toStringAsFixed(1)}% Full',
                                         style: const TextStyle(
                                           fontSize: 15,
                                           color: Colors.grey,
