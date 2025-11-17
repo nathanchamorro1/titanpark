@@ -5,7 +5,9 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class ParkingAvailabilityScreen extends StatefulWidget {
-  const ParkingAvailabilityScreen({super.key});
+  final http.Client? httpClient;
+
+  const ParkingAvailabilityScreen({super.key, this.httpClient});
 
   @override
   State<ParkingAvailabilityScreen> createState() =>
@@ -16,11 +18,21 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   bool _isLoading = true;
   List<Map<String, dynamic>> _data = [];
   String? _errorMessage;
+  late final http.Client _httpClient;
 
   @override
   void initState() {
     super.initState();
+    _httpClient = widget.httpClient ?? http.Client();
     _fetchStructures();
+  }
+
+  @override
+  void dispose() {
+    if (widget.httpClient == null) {
+      _httpClient.close();
+    }
+    super.dispose();
   }
 
   Future<void> _fetchStructures() async {
@@ -30,7 +42,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
     });
 
     try {
-      final res = await http.get(
+      final res = await _httpClient.get(
         Uri.parse('$kParkingApiBaseUrl/parking_data/all'),
         headers: {'Content-Type': 'application/json'},
       );
@@ -122,7 +134,8 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                       // ------------ FIXED PERCENTAGE HERE ------------
                       // Backend is incorrectly returning values like 4784 instead of 47.84
                       // Convert to normalized 0.0–1.0
-                      final double raw = (structure['perc_full'] as num).toDouble();
+                      final double raw =
+                          (structure['perc_full'] as num).toDouble();
                       final double percFull = raw / 10000.0; // FIXED
                       final double displayPercent = percFull * 100;
                       // -------------------------------------------------
@@ -144,7 +157,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Header
+                              //   Header
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -159,13 +172,14 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                     ),
                                   ),
                                   Container(
+                                    key: Key('parking_indicator'),
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 6,
                                     ),
                                     decoration: BoxDecoration(
                                       color: _getAvailabilityColor(percFull)
-                                          .withAlpha(51),
+                                          .withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
                                         color: _getAvailabilityColor(percFull),
@@ -185,7 +199,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              // Availability bar
+                              //   Availability bar
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -203,7 +217,8 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '${displayPercent.toStringAsFixed(1)}% Full',
+                                        key: const Key('perc_full'),
+                                        '${(percFull * 100).toInt()}% Full',
                                         style: const TextStyle(
                                           fontSize: 15,
                                           color: Colors.grey,
@@ -215,7 +230,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: LinearProgressIndicator(
-                                      value: percFull, // 0.0 to 1.0
+                                      value: percFull,
                                       backgroundColor: Colors.grey[200],
                                       color: _getAvailabilityColor(percFull),
                                       minHeight: 12,
