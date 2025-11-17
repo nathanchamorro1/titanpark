@@ -55,7 +55,6 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   }
 
   Color _getAvailabilityColor(double percFull) {
-    //   Return appropriate color based on how full a structure is
     if (percFull < 0.5) {
       return Colors.green;
     } else if (percFull < 0.75) {
@@ -89,180 +88,188 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
-          ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 60, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _fetchStructures,
-              child: const Text('Retry'),
-            )
-          ],
-        ),
-      )
-          : RefreshIndicator(
-              onRefresh: _fetchStructures,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: _data.length,
-                itemBuilder: (context, idx) {
-                  final structure = _data[idx];
-                  final structName = structure['name'];
-                  final percFull = (structure['perc_full'] as num).toDouble();
-                  final available = structure['available'] as int;
-                  final total = structure['total'] as int;
-                  final taken = total - available;
-                  final numFormatter = NumberFormat('#,##0');
-                  final spotsForSaleCount = 0;
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline,
+                          size: 60, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Text(
+                        _errorMessage!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _fetchStructures,
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: _fetchStructures,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _data.length,
+                    itemBuilder: (context, idx) {
+                      final structure = _data[idx];
+                      final structName = structure['name'];
 
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //   Header
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  structName,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: _getAvailabilityColor(percFull)
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: _getAvailabilityColor(percFull),
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: Text(
-                                  _getAvailabilityText(percFull),
-                                  style: TextStyle(
-                                    color: _getAvailabilityColor(percFull),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 16),
+                      // ------------ FIXED PERCENTAGE HERE ------------
+                      // Backend is incorrectly returning values like 4784 instead of 47.84
+                      // Convert to normalized 0.0–1.0
+                      final double raw = (structure['perc_full'] as num).toDouble();
+                      final double percFull = raw / 10000.0; // FIXED
+                      final double displayPercent = percFull * 100;
+                      // -------------------------------------------------
 
-                          //   Availability bar
-                          Column(
+                      final available = structure['available'] as int;
+                      final total = structure['total'] as int;
+                      final taken = total - available;
+                      final numFormatter = NumberFormat('#,##0');
+                      final spotsForSaleCount = 0;
+
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Header
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    '${numFormatter.format(available)} spots available',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: _getAvailabilityColor(percFull),
+                                  Expanded(
+                                    child: Text(
+                                      structName,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: _getAvailabilityColor(percFull)
+                                          .withAlpha(51),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: _getAvailabilityColor(percFull),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      _getAvailabilityText(percFull),
+                                      style: TextStyle(
+                                        color: _getAvailabilityColor(percFull),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Availability bar
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${numFormatter.format(available)} spots available',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color:
+                                              _getAvailabilityColor(percFull),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${displayPercent.toStringAsFixed(1)}% Full',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: LinearProgressIndicator(
+                                      value: percFull, // 0.0 to 1.0
+                                      backgroundColor: Colors.grey[200],
+                                      color: _getAvailabilityColor(percFull),
+                                      minHeight: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    '${(percFull * 100).toInt()}% Full',
+                                    '${numFormatter.format(taken)} / ${numFormatter.format(total)} spots taken',
                                     style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       color: Colors.grey,
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: LinearProgressIndicator(
-                                  value: percFull,
-                                  backgroundColor: Colors.grey[200],
-                                  color: _getAvailabilityColor(percFull),
-                                  minHeight: 12,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${numFormatter.format(taken)} / ${numFormatter.format(total)} spots taken',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
+                              const SizedBox(height: 16),
 
-                        //   Sports for sale count
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                              // Spots for sale count
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '${numFormatter.format(spotsForSaleCount)} spots for sale',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                ],
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: spotsForSaleCount > 0 ? () {
-                                  // TODO: Redirect to listing page with a filter just for this structure
-                                  throw UnimplementedError();
-                                } : null,
-                                icon: const Icon(Icons.local_parking, size: 10),
-                                label: const Text('Park here'),
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
+                                  ElevatedButton.icon(
+                                    onPressed: spotsForSaleCount > 0
+                                        ? () {
+                                            throw UnimplementedError();
+                                          }
+                                        : null,
+                                    icon: const Icon(Icons.local_parking,
+                                        size: 12),
+                                    label: const Text('Park here'),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 8,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
     );
   }
 }
