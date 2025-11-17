@@ -3,6 +3,7 @@ import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
 import 'package:titanpark/screens/list_spot_screen.dart';
 import './parking_availability_screen.dart';
+import './vehicles_screen.dart';
 import '../app_router.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,14 +27,13 @@ class HomeScreen extends StatelessWidget {
                   'assets/titanpark_bg.jpg',
                   fit: BoxFit.cover,
                 ),
-
                 Container(color: Colors.black.withValues(alpha: 0.4)),
-
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                      padding: const EdgeInsets.only(
+                          top: 8.0, right: 8.0, left: 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -41,8 +41,8 @@ class HomeScreen extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.person, color: Colors.white),
                             tooltip: 'Profile',
-                            onPressed: () =>
-                                Navigator.of(context).pushNamed(AppRouter.profile),
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(AppRouter.profile),
                           ),
                           IconButton(
                             icon: const Icon(Icons.logout, color: Colors.white),
@@ -54,7 +54,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Center(
                   child: Image.asset(
                     'assets/titanpark_logo.png',
@@ -65,12 +64,10 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-
           Container(
             height: 6,
             color: const Color(0xFFFF7900),
           ),
-
           Expanded(
             child: Center(
               child: Padding(
@@ -95,13 +92,23 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     }),
+                    const SizedBox(height: 16),
+                    _actionButton('MY VEHICLES', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const VehiclesScreen(),
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 32),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ParkingAvailabilityScreen(),
+                            builder: (context) =>
+                                const ParkingAvailabilityScreen(),
                           ),
                         );
                       },
