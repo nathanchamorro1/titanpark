@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 import 'package:titanpark/screens/marketplace_screen.dart';
-import 'package:titanpark/screens/reservation_screen.dart';
+import 'package:titanpark/screens/list_spot_screen.dart';
 import './parking_availability_screen.dart';
 import '../app_router.dart';
 
@@ -37,6 +37,7 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          // Profile Icon
                           IconButton(
                             icon: const Icon(Icons.person, color: Colors.white),
                             tooltip: 'Profile',
@@ -77,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _actionButton('LIST A SPOT', () {
+                    _actionButton('BUY A SPOT', () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -86,11 +87,11 @@ class HomeScreen extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 16),
-                    _actionButton('SELL A SPOT', () {
+                    _actionButton('LIST A SPOT', () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ReservationScreen(),
+                          builder: (context) => const ListSpotScreen(),
                         ),
                       );
                     }),
@@ -111,11 +112,11 @@ class HomeScreen extends StatelessWidget {
                               text: 'OR ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                             TextSpan(
-                              text: 'view parking availability >',
+                              text: 'view parking availability',
                               style: TextStyle(
                                 color: Colors.blueAccent,
                                 decoration: TextDecoration.underline,
