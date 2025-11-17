@@ -1,5 +1,6 @@
 // lib/services/titanpark_api.dart
 import 'dart:convert';
+import 'package:flutter/foundation.dart'; // required for debugPrint
 import 'package:http/http.dart' as http;
 
 import '../models/listing.dart';
@@ -91,8 +92,9 @@ class TitanParkApi {
         'license_plate': licensePlate,
       },
     );
-    print('ADD VEHICLE REQUEST → $uri');
-    
+
+    if (kDebugMode) debugPrint('ADD VEHICLE REQUEST → $uri');
+
     final response = await http.post(uri);
 
     if (response.statusCode != 200 && response.statusCode != 201) {
