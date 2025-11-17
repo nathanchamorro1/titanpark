@@ -6,13 +6,19 @@ import 'package:http/http.dart' as http;
 import './add_vehicle_screen.dart';
 
 class VehiclesScreen extends StatefulWidget {
-  const VehiclesScreen({super.key});
+  final http.Client? httpClient;
+
+  const VehiclesScreen({
+    super.key,
+    this.httpClient,
+  });
 
   @override
   State<VehiclesScreen> createState() => _VehiclesScreen();
 }
 
 class _VehiclesScreen extends State<VehiclesScreen> {
+  late final http.Client _httpClient;
   final userID = FirebaseAuth.instance.currentUser?.uid;
   List<Map<String, dynamic>> _vehicles = [];
   bool _isLoading = true;
@@ -20,6 +26,7 @@ class _VehiclesScreen extends State<VehiclesScreen> {
   @override
   void initState() {
     super.initState();
+    _httpClient = widget.httpClient ?? http.Client();
     _fetchVehicles();
   }
 
@@ -28,7 +35,7 @@ class _VehiclesScreen extends State<VehiclesScreen> {
       _isLoading = true;
     });
     try {
-      final res = await http.get(
+      final res = await _httpClient.get(
         Uri.parse('$kParkingApiBaseUrl/get_user_vehicles')
             .replace(queryParameters: {'user_id': userID}),
         headers: {
@@ -71,7 +78,7 @@ class _VehiclesScreen extends State<VehiclesScreen> {
       'vehicle_id': vehicleID,
     };
 
-    final res = await http.post(
+    final res = await _httpClient.post(
       Uri.parse('$kParkingApiBaseUrl/delete_vehicle')
           .replace(queryParameters: params),
       headers: {
