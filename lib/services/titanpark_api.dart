@@ -1,78 +1,76 @@
 // lib/services/titanpark_api.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 import '../models/listing.dart';
+import '../config.dart';
 
 class TitanParkApi {
-  // Use whatever base URL you want (local or production)
-  final String baseUrl = 'http://127.0.0.1:8000';
-  // final String baseUrl = 'https://parking.titanpark.online';
+  final String baseUrl = kParkingApiBaseUrl;
 
-Future<List<Listing>> getListings() async {
-  final response = await http.get(Uri.parse('$baseUrl/get_listings'));
+  Future<List<Listing>> getListings() async {
+    final response = await http.get(Uri.parse('$baseUrl/get_listings'));
 
-  if (response.statusCode != 200) {
-    throw Exception('Error trying to get listings: ${response.body}');
+    if (response.statusCode != 200) {
+      throw Exception('Error trying to get listings: ${response.body}');
+    }
+
+    final decoded = jsonDecode(response.body);
+
+    if (decoded is Map<String, dynamic>) {
+      final List<Listing> listings = [];
+
+      decoded.forEach((idKey, value) {
+        final data = value as Map<String, dynamic>;
+
+        // user_id is a string
+        final userId = data['user_id']?.toString() ?? '';
+
+        final rawName =
+            (data['structure_name'] ?? data['structure'] ?? '').toString();
+
+        // Normalize for matching
+        final nameUpper = rawName.toUpperCase();
+
+        int structureId;
+        if (nameUpper.contains('NUTWOOD')) {
+          structureId = 1;
+        } else if (nameUpper.contains('STATE COLLEGE')) {
+          structureId = 2;
+        } else if (nameUpper.contains('EASTSIDE NORTH')) {
+          structureId = 3;
+        } else if (nameUpper.contains('EASTSIDE SOUTH')) {
+          structureId = 4;
+        } else {
+          // Fall back if backend doesn’t send a recognizable name
+          structureId = 0;
+        }
+
+        final vehicle = data['vehicle'] as Map<String, dynamic>?;
+
+        final vehicleSummary = vehicle == null
+            ? ''
+            : '${vehicle['make'] ?? ''} ${vehicle['model'] ?? ''} (${vehicle['license_plate'] ?? ''})';
+
+        listings.add(
+          Listing(
+            id: int.tryParse(idKey) ?? 0,
+            userId: userId,
+            price: (data['price'] as num?)?.toDouble() ?? 0.0,
+            structureId: structureId,
+            floor: (data['floor'] as int?) ?? 0,
+            vehicleId: vehicleSummary,
+            comment: data['comment'] as String?,
+          ),
+        );
+      });
+
+      return listings;
+    }
+
+    // If JSON structure is unexpected, return empty list
+    return [];
   }
-
-  final decoded = jsonDecode(response.body);
-
-  if (decoded is Map<String, dynamic>) {
-    final List<Listing> listings = [];
-
-    decoded.forEach((idKey, value) {
-      final data = value as Map<String, dynamic>;
-
-      // user_id is a string like "demo-user"
-      final userId = data['user_id']?.toString() ?? '';
-
-      // Try to get a human-readable structure name from backend.
-      // Some backends might use "structure_name" or just "structure".
-      final rawName =
-          (data['structure_name'] ?? data['structure'] ?? '').toString();
-
-      // Normalize for matching
-      final nameUpper = rawName.toUpperCase();
-
-      int structureId;
-      if (nameUpper.contains('NUTWOOD')) {
-        structureId = 1;
-      } else if (nameUpper.contains('STATE COLLEGE')) {
-        structureId = 2;
-      } else if (nameUpper.contains('EASTSIDE NORTH')) {
-        structureId = 3;
-      } else if (nameUpper.contains('EASTSIDE SOUTH')) {
-        structureId = 4;
-      } else {
-        // Fall back if backend doesn’t send a recognizable name
-        structureId = 0;
-      }
-
-      final vehicle = data['vehicle'] as Map<String, dynamic>?;
-
-      final vehicleSummary = vehicle == null
-          ? ''
-          : '${vehicle['make'] ?? ''} ${vehicle['model'] ?? ''} (${vehicle['license_plate'] ?? ''})';
-
-      listings.add(
-        Listing(
-          id: int.tryParse(idKey) ?? 0,
-          userId: userId,
-          price: (data['price'] as num?)?.toDouble() ?? 0.0,
-          structureId: structureId,
-          floor: (data['floor'] as int?) ?? 0,
-          vehicleId: vehicleSummary,
-          comment: data['comment'] as String?,
-        ),
-      );
-    });
-
-    return listings;
-  }
-
-  // If JSON structure is unexpected, return empty list
-  return [];
-}
 
   /// Call /add_vehicle and return the vehicle's ID (UUID as String).
   Future<String> addVehicle({
@@ -93,7 +91,8 @@ Future<List<Listing>> getListings() async {
         'license_plate': licensePlate,
       },
     );
-
+    print('ADD VEHICLE REQUEST → $uri');
+    
     final response = await http.post(uri);
 
     if (response.statusCode != 200 && response.statusCode != 201) {
