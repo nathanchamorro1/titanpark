@@ -4,7 +4,7 @@ import 'auth/auth_service.dart';
 import 'screens/home_screen.dart';
 import 'screens/vehicles_screen.dart';
 import 'screens/marketplace_screen.dart';
-import 'screens/reservation_screen.dart';
+import 'screens/list_spot_screen.dart';
 import 'screens/wallet_screen.dart';
 import 'screens/profile_page.dart';
 
@@ -30,7 +30,7 @@ class AppRouter {
       case marketplace:
         return _fade(const MarketplaceScreen());
       case reservation:
-        return _fade(const ReservationScreen());
+        return _fade(const ListSpotScreen());
       case wallet:
         return _fade(const WalletScreen());
       case profile: // ⟵ NEW
