@@ -67,10 +67,9 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   }
 
   Color _getAvailabilityColor(double percFull) {
-    //   Return appropriate color based on how full a structure is
-    if (percFull < 0.5) {
+    if (percFull < 50) {
       return Colors.green;
-    } else if (percFull < 0.75) {
+    } else if (percFull < 75) {
       return Colors.orange;
     } else {
       return Colors.red;
@@ -78,9 +77,9 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
   }
 
   String _getAvailabilityText(double percFull) {
-    if (percFull < 0.5) {
+    if (percFull < 50) {
       return 'Low Traffic';
-    } else if (percFull < 0.75) {
+    } else if (percFull < 75) {
       return 'Moderate Traffic';
     } else {
       return 'High Traffic';
@@ -101,9 +100,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
               ? Center(
                   child: Column(
@@ -115,13 +112,13 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                       Text(
                         _errorMessage!,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: _fetchStructures,
                         child: const Text('Retry'),
-                      )
+                      ),
                     ],
                   ),
                 )
@@ -133,8 +130,12 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                     itemBuilder: (context, idx) {
                       final structure = _data[idx];
                       final structName = structure['name'];
-                      final percFull =
-                          (structure['perc_full'] as num).toDouble();
+
+                      // Percentage processing
+                      final double raw =
+                          (structure['perc_full'] as num).toDouble(); // example: 47.8
+                      final double percFull = raw / 100; // 0.47 for progress bar
+
                       final available = structure['available'] as int;
                       final total = structure['total'] as int;
                       final taken = total - available;
@@ -152,7 +153,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //   Header
+                              // Header
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -173,18 +174,18 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                       vertical: 6,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: _getAvailabilityColor(percFull)
+                                      color: _getAvailabilityColor(raw)
                                           .withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: _getAvailabilityColor(percFull),
+                                        color: _getAvailabilityColor(raw),
                                         width: 1.5,
                                       ),
                                     ),
                                     child: Text(
-                                      _getAvailabilityText(percFull),
+                                      _getAvailabilityText(raw),
                                       style: TextStyle(
-                                        color: _getAvailabilityColor(percFull),
+                                        color: _getAvailabilityColor(raw),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -194,7 +195,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              //   Availability bar
+                              // Availability bar
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -208,12 +209,12 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color:
-                                              _getAvailabilityColor(percFull),
+                                              _getAvailabilityColor(raw),
                                         ),
                                       ),
                                       Text(
                                         key: const Key('perc_full'),
-                                        '${(percFull * 100).toInt()}% Full',
+                                        '${raw.toStringAsFixed(1)}% Full',
                                         style: const TextStyle(
                                           fontSize: 15,
                                           color: Colors.grey,
@@ -227,7 +228,7 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                                     child: LinearProgressIndicator(
                                       value: percFull,
                                       backgroundColor: Colors.grey[200],
-                                      color: _getAvailabilityColor(percFull),
+                                      color: _getAvailabilityColor(raw),
                                       minHeight: 12,
                                     ),
                                   ),
@@ -243,31 +244,26 @@ class _ParkingAvailabilityScreen extends State<ParkingAvailabilityScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              //   Sports for sale count
+                              // Spots for sale count
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${numFormatter.format(spotsForSaleCount)} spots for sale',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    '${numFormatter.format(spotsForSaleCount)} spots for sale',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                   ElevatedButton.icon(
                                     onPressed: spotsForSaleCount > 0
                                         ? () {
-                                            // TODO: Redirect to listing page with a filter just for this structure
                                             throw UnimplementedError();
                                           }
                                         : null,
                                     icon: const Icon(Icons.local_parking,
-                                        size: 10),
+                                        size: 12),
                                     label: const Text('Park here'),
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
