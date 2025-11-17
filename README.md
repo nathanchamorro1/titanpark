@@ -42,10 +42,22 @@ cd titanpark/
 ```
 <br />
 
-Run flutter
+## Testing
+
+Check if all tests are passing
 
 ```bash
 flutter run
+```
+
+Create coverage report
+
+Note: Must install [lcov](https://github.com/linux-test-project/lcov)
+
+```bash
+flutter test --coverage
+genhtml coverage/lcov.info -o coverage/html
+open coverage/html/index.html
 ```
 
 ## Top Contributors
